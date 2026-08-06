@@ -1,0 +1,38 @@
+name: Verify Android
+on:
+  push:
+    branches: [main]
+    paths-ignore: [PUBLIC_RELEASE_REQUEST.md]
+  pull_request:
+  workflow_dispatch:
+  workflow_call:
+permissions: {contents: read}
+concurrency: {group: "verify-${{ github.ref }}", cancel-in-progress: true}
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '17'}
+      - uses: gradle/actions/setup-gradle@v4
+        with: {gradle-version: '8.11.1'}
+      - uses: android-actions/setup-android@v3
+      - name: Install Android SDK
+        run: sdkmanager 'platforms;android-36' 'build-tools;36.0.0' platform-tools
+      - run: python scripts/public_sanitize_check.py --root .
+      - run: python -m unittest discover -s tests -v
+      - run: python scripts/download_models.py --manifest MODEL_MANIFEST.json --root .
+      - run: gradle --no-daemon testDebugUnitTest assembleDebug -PtargetAbi=arm64-v8a
+      - run: python scripts/verify_apk.py --apk app/build/outputs/apk/debug/app-debug.apk --expected-package com.qujindai.locowiki.flashrecall --expected-version-name 0.4.0 --expected-version-code 5 --expected-abi arm64-v8a --require-debuggable
+      - name: Package evidence
+        run: |
+          mkdir -p dist
+          cp app/build/outputs/apk/debug/app-debug.apk dist/locowiki-flash-recall-v0.4.0-alpha.1-arm64-debug.apk
+          (cd dist && sha256sum *.apk > SHA256SUMS.txt)
+          $ANDROID_HOME/build-tools/36.0.0/aapt2 dump badging dist/*.apk > dist/APK_BADGING.txt
+          $ANDROID_HOME/cmdline-tools/latest/bin/apkanalyzer manifest permissions dist/*.apk > dist/APK_PERMISSIONS.txt
+          printf 'repository=%s\ncommit=%s\nworkflow=%s\n' "$GITHUB_REPOSITORY" "$GITHUB_SHA" "$GITHUB_RUN_ID" > dist/BUILD_PROVENANCE.txt
+      - uses: actions/upload-artifact@v4
+        with: {name: locowiki-flash-recall-v0.4.0-arm64-debug, path: dist, retention-days: 3}
