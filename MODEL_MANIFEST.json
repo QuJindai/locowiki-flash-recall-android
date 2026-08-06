@@ -6,8 +6,8 @@
       "url": "https://github.com/k2-fsa/sherpa-onnx/releases/download/v1.13.2/sherpa-onnx-1.13.2.aar",
       "destination": "app/libs/sherpa-onnx-1.13.2.aar",
       "license_source": "https://github.com/k2-fsa/sherpa-onnx/blob/v1.13.2/LICENSE",
-      "sha256": "aa5505e9b1265050dd2e0b00590e194d037d669e9daa47b78665aedc20afc7b9",
-      "bytes": 62846299
+      "sha256": "aa5505c0ec4f8bdaee5f214a64ba3012be64f2aecc022e82a64f33392b8dd245",
+      "bytes": 56655608
     },
     {
       "id": "streaming-zipformer-bilingual",
