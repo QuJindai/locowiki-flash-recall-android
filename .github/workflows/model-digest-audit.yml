@@ -1,0 +1,48 @@
+name: Audit Upstream Model Digests
+
+on:
+  push:
+    branches: [audit/model-digests]
+    paths: [.github/workflows/model-digest-audit.yml]
+  workflow_dispatch:
+
+permissions: {contents: read}
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Download fixed upstream assets and calculate digests
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/model-audit/asr
+
+          download() {
+            local id="$1" url="$2" path="$3"
+            curl --fail --location --retry 5 --retry-all-errors --connect-timeout 30 \
+              --output "$path" "$url"
+            printf 'DIGEST|%s|%s|%s\n' "$id" "$(stat -c%s "$path")" "$(sha256sum "$path" | cut -d' ' -f1)"
+          }
+
+          download asr-archive \
+            'https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-streaming-zipformer-small-bilingual-zh-en-2023-02-16.tar.bz2' \
+            /tmp/model-audit/asr.tar.bz2
+          download silero-vad \
+            'https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/silero_vad.onnx' \
+            /tmp/model-audit/silero_vad.onnx
+          download speaker-campplus \
+            'https://github.com/k2-fsa/sherpa-onnx/releases/download/speaker-recongition-models/3dspeaker_speech_campplus_sv_zh-cn_16k-common.onnx' \
+            /tmp/model-audit/speaker.onnx
+
+          tar -xjf /tmp/model-audit/asr.tar.bz2 -C /tmp/model-audit/asr
+          for name in \
+            encoder-epoch-99-avg-1.int8.onnx \
+            decoder-epoch-99-avg-1.onnx \
+            joiner-epoch-99-avg-1.int8.onnx \
+            tokens.txt; do
+            path="$(find /tmp/model-audit/asr -type f -name "$name" -print -quit)"
+            test -n "$path"
+            printf 'DIGEST|asr:%s|%s|%s\n' "$name" "$(stat -c%s "$path")" "$(sha256sum "$path" | cut -d' ' -f1)"
+          done
