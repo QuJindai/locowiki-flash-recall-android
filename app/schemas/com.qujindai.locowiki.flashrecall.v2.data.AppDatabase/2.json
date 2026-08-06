@@ -1,0 +1,1123 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 2,
+    "identityHash": "a2348479985f430632fbd19f3aa94430",
+    "entities": [
+      {
+        "tableName": "entities",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`entity_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `canonical_name` TEXT NOT NULL, `entity_type` TEXT NOT NULL, `status` TEXT NOT NULL, `created_at` INTEGER NOT NULL, `updated_at` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "entityId",
+            "columnName": "entity_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "canonicalName",
+            "columnName": "canonical_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "entityType",
+            "columnName": "entity_type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "created_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updated_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "entity_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_entities_canonical_name_entity_type",
+            "unique": true,
+            "columnNames": [
+              "canonical_name",
+              "entity_type"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_entities_canonical_name_entity_type` ON `${TABLE_NAME}` (`canonical_name`, `entity_type`)"
+          }
+        ]
+      },
+      {
+        "tableName": "entity_aliases",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`alias_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `entity_id` INTEGER NOT NULL, `alias_text` TEXT NOT NULL, `alias_type` TEXT NOT NULL, `priority` INTEGER NOT NULL, `enabled` INTEGER NOT NULL, `created_at` INTEGER NOT NULL, `updated_at` INTEGER NOT NULL, FOREIGN KEY(`entity_id`) REFERENCES `entities`(`entity_id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "aliasId",
+            "columnName": "alias_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "entityId",
+            "columnName": "entity_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "aliasText",
+            "columnName": "alias_text",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "aliasType",
+            "columnName": "alias_type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "priority",
+            "columnName": "priority",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "enabled",
+            "columnName": "enabled",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "created_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updated_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "alias_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_entity_aliases_entity_id",
+            "unique": false,
+            "columnNames": [
+              "entity_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_entity_aliases_entity_id` ON `${TABLE_NAME}` (`entity_id`)"
+          },
+          {
+            "name": "index_entity_aliases_alias_text",
+            "unique": true,
+            "columnNames": [
+              "alias_text"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_entity_aliases_alias_text` ON `${TABLE_NAME}` (`alias_text`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "entities",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "entity_id"
+            ],
+            "referencedColumns": [
+              "entity_id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "sources",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`source_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `source_name` TEXT NOT NULL, `source_type` TEXT NOT NULL, `source_location` TEXT NOT NULL, `file_hash` TEXT NOT NULL, `source_date` TEXT NOT NULL, `owner` TEXT NOT NULL, `created_at` INTEGER NOT NULL, `updated_at` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "sourceId",
+            "columnName": "source_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sourceName",
+            "columnName": "source_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sourceType",
+            "columnName": "source_type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sourceLocation",
+            "columnName": "source_location",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fileHash",
+            "columnName": "file_hash",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sourceDate",
+            "columnName": "source_date",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "owner",
+            "columnName": "owner",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "created_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updated_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "source_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_sources_source_name_source_location",
+            "unique": true,
+            "columnNames": [
+              "source_name",
+              "source_location"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_sources_source_name_source_location` ON `${TABLE_NAME}` (`source_name`, `source_location`)"
+          }
+        ]
+      },
+      {
+        "tableName": "facts",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`fact_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `entity_id` INTEGER NOT NULL, `attribute_key` TEXT NOT NULL, `attribute_name` TEXT NOT NULL, `value_text` TEXT NOT NULL, `value_number` REAL, `unit` TEXT NOT NULL, `year` INTEGER, `period_start` TEXT NOT NULL, `period_end` TEXT NOT NULL, `project` TEXT NOT NULL, `factory` TEXT NOT NULL, `topic` TEXT NOT NULL, `definition_text` TEXT NOT NULL, `status` TEXT NOT NULL, `source_id` INTEGER NOT NULL, `verified_at` TEXT NOT NULL, `created_at` INTEGER NOT NULL, `updated_at` INTEGER NOT NULL, FOREIGN KEY(`entity_id`) REFERENCES `entities`(`entity_id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`source_id`) REFERENCES `sources`(`source_id`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
+        "fields": [
+          {
+            "fieldPath": "factId",
+            "columnName": "fact_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "entityId",
+            "columnName": "entity_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "attributeKey",
+            "columnName": "attribute_key",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "attributeName",
+            "columnName": "attribute_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "valueText",
+            "columnName": "value_text",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "valueNumber",
+            "columnName": "value_number",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "unit",
+            "columnName": "unit",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "year",
+            "columnName": "year",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "periodStart",
+            "columnName": "period_start",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "periodEnd",
+            "columnName": "period_end",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "project",
+            "columnName": "project",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "factory",
+            "columnName": "factory",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "topic",
+            "columnName": "topic",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "definitionText",
+            "columnName": "definition_text",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sourceId",
+            "columnName": "source_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "verifiedAt",
+            "columnName": "verified_at",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "created_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updated_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "fact_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_facts_entity_id",
+            "unique": false,
+            "columnNames": [
+              "entity_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_facts_entity_id` ON `${TABLE_NAME}` (`entity_id`)"
+          },
+          {
+            "name": "index_facts_source_id",
+            "unique": false,
+            "columnNames": [
+              "source_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_facts_source_id` ON `${TABLE_NAME}` (`source_id`)"
+          },
+          {
+            "name": "index_facts_attribute_key_year_project_factory_topic_status",
+            "unique": false,
+            "columnNames": [
+              "attribute_key",
+              "year",
+              "project",
+              "factory",
+              "topic",
+              "status"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_facts_attribute_key_year_project_factory_topic_status` ON `${TABLE_NAME}` (`attribute_key`, `year`, `project`, `factory`, `topic`, `status`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "entities",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "entity_id"
+            ],
+            "referencedColumns": [
+              "entity_id"
+            ]
+          },
+          {
+            "table": "sources",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "source_id"
+            ],
+            "referencedColumns": [
+              "source_id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "fact_search_fts",
+        "createSql": "CREATE VIRTUAL TABLE IF NOT EXISTS `${TABLE_NAME}` USING FTS5(`canonical_name`, `aliases`, `attribute_name`, `value_text`, `project`, `factory`, `topic`, `source_name`, tokenize=`unicode61`)",
+        "fields": [
+          {
+            "fieldPath": "canonicalName",
+            "columnName": "canonical_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "aliases",
+            "columnName": "aliases",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "attributeName",
+            "columnName": "attribute_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "valueText",
+            "columnName": "value_text",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "project",
+            "columnName": "project",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "factory",
+            "columnName": "factory",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "topic",
+            "columnName": "topic",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sourceName",
+            "columnName": "source_name",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "rowid"
+          ]
+        },
+        "ftsVersion": "FTS5",
+        "ftsOptions": {
+          "tokenizer": "unicode61",
+          "tokenizerArgs": [],
+          "contentTable": "",
+          "languageIdColumnName": "",
+          "matchInfo": "FTS4",
+          "notIndexedColumns": [],
+          "prefixSizes": [],
+          "preferredOrder": "ASC",
+          "contentRowId": "",
+          "columnSize": true,
+          "detail": "FULL"
+        },
+        "contentSyncTriggers": []
+      },
+      {
+        "tableName": "import_batches",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`batch_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `file_name` TEXT NOT NULL, `file_hash` TEXT NOT NULL, `imported_at` INTEGER NOT NULL, `record_count` INTEGER NOT NULL, `new_count` INTEGER NOT NULL, `update_count` INTEGER NOT NULL, `conflict_count` INTEGER NOT NULL, `rejected_count` INTEGER NOT NULL, `status` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "batchId",
+            "columnName": "batch_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fileName",
+            "columnName": "file_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fileHash",
+            "columnName": "file_hash",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "importedAt",
+            "columnName": "imported_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "recordCount",
+            "columnName": "record_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "newCount",
+            "columnName": "new_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updateCount",
+            "columnName": "update_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "conflictCount",
+            "columnName": "conflict_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "rejectedCount",
+            "columnName": "rejected_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "batch_id"
+          ]
+        }
+      },
+      {
+        "tableName": "latency_traces",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`trace_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `session_id` TEXT NOT NULL, `query_text` TEXT NOT NULL, `model_name` TEXT NOT NULL, `model_precision` TEXT NOT NULL, `thread_count` INTEGER NOT NULL, `fact_count` INTEGER NOT NULL, `alias_count` INTEGER NOT NULL, `thermal_status` INTEGER NOT NULL, `cold_or_warm` TEXT NOT NULL, `query_route` TEXT NOT NULL, `speech_start_ns` INTEGER NOT NULL, `speech_end_ns` INTEGER NOT NULL, `asr_first_partial_ns` INTEGER NOT NULL, `asr_final_ns` INTEGER NOT NULL, `asr_first_partial_ms` INTEGER NOT NULL, `asr_endpoint_ms` INTEGER NOT NULL, `query_parse_ms` INTEGER NOT NULL, `exact_lookup_ms` INTEGER NOT NULL, `fts_ms` INTEGER NOT NULL, `answer_compile_ms` INTEGER NOT NULL, `end_to_end_ms` INTEGER NOT NULL, `result_status` TEXT NOT NULL, `error_code` TEXT NOT NULL, `created_at` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "traceId",
+            "columnName": "trace_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sessionId",
+            "columnName": "session_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "queryText",
+            "columnName": "query_text",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "modelName",
+            "columnName": "model_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "modelPrecision",
+            "columnName": "model_precision",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "threadCount",
+            "columnName": "thread_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "factCount",
+            "columnName": "fact_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "aliasCount",
+            "columnName": "alias_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "thermalStatus",
+            "columnName": "thermal_status",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "coldOrWarm",
+            "columnName": "cold_or_warm",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "queryRoute",
+            "columnName": "query_route",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "speechStartNs",
+            "columnName": "speech_start_ns",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "speechEndNs",
+            "columnName": "speech_end_ns",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "asrFirstPartialNs",
+            "columnName": "asr_first_partial_ns",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "asrFinalNs",
+            "columnName": "asr_final_ns",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "asrFirstPartialMs",
+            "columnName": "asr_first_partial_ms",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "asrEndpointMs",
+            "columnName": "asr_endpoint_ms",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "queryParseMs",
+            "columnName": "query_parse_ms",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "exactLookupMs",
+            "columnName": "exact_lookup_ms",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ftsMs",
+            "columnName": "fts_ms",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "answerCompileMs",
+            "columnName": "answer_compile_ms",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "endToEndMs",
+            "columnName": "end_to_end_ms",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "resultStatus",
+            "columnName": "result_status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "errorCode",
+            "columnName": "error_code",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "created_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "trace_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_latency_traces_created_at",
+            "unique": false,
+            "columnNames": [
+              "created_at"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_latency_traces_created_at` ON `${TABLE_NAME}` (`created_at`)"
+          }
+        ]
+      },
+      {
+        "tableName": "meeting_sessions",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`session_id` TEXT NOT NULL, `title` TEXT NOT NULL, `started_at` INTEGER NOT NULL, `ended_at` INTEGER, `project` TEXT NOT NULL, `vehicle` TEXT NOT NULL, `factory` TEXT NOT NULL, `topic` TEXT NOT NULL, `meeting_year` INTEGER NOT NULL, `record_mode` TEXT NOT NULL, `status` TEXT NOT NULL, `audio_path` TEXT NOT NULL, `created_at` INTEGER NOT NULL, `updated_at` INTEGER NOT NULL, PRIMARY KEY(`session_id`))",
+        "fields": [
+          {
+            "fieldPath": "sessionId",
+            "columnName": "session_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "startedAt",
+            "columnName": "started_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "endedAt",
+            "columnName": "ended_at",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "project",
+            "columnName": "project",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "vehicle",
+            "columnName": "vehicle",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "factory",
+            "columnName": "factory",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "topic",
+            "columnName": "topic",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "meetingYear",
+            "columnName": "meeting_year",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "recordMode",
+            "columnName": "record_mode",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "audioPath",
+            "columnName": "audio_path",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "created_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updated_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "session_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_meeting_sessions_started_at",
+            "unique": false,
+            "columnNames": [
+              "started_at"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_meeting_sessions_started_at` ON `${TABLE_NAME}` (`started_at`)"
+          },
+          {
+            "name": "index_meeting_sessions_status",
+            "unique": false,
+            "columnNames": [
+              "status"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_meeting_sessions_status` ON `${TABLE_NAME}` (`status`)"
+          }
+        ]
+      },
+      {
+        "tableName": "utterances",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`utterance_id` TEXT NOT NULL, `session_id` TEXT NOT NULL, `speaker_label` TEXT NOT NULL, `start_ms` INTEGER NOT NULL, `end_ms` INTEGER NOT NULL, `text` TEXT NOT NULL, `corrected_text` TEXT NOT NULL, `is_question` INTEGER NOT NULL, `asr_confidence` REAL, `created_at` INTEGER NOT NULL, `updated_at` INTEGER NOT NULL, PRIMARY KEY(`utterance_id`), FOREIGN KEY(`session_id`) REFERENCES `meeting_sessions`(`session_id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "utteranceId",
+            "columnName": "utterance_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sessionId",
+            "columnName": "session_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "speakerLabel",
+            "columnName": "speaker_label",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "startMs",
+            "columnName": "start_ms",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "endMs",
+            "columnName": "end_ms",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "text",
+            "columnName": "text",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "correctedText",
+            "columnName": "corrected_text",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isQuestion",
+            "columnName": "is_question",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "asrConfidence",
+            "columnName": "asr_confidence",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "created_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updated_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "utterance_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_utterances_session_id_start_ms",
+            "unique": false,
+            "columnNames": [
+              "session_id",
+              "start_ms"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_utterances_session_id_start_ms` ON `${TABLE_NAME}` (`session_id`, `start_ms`)"
+          },
+          {
+            "name": "index_utterances_is_question",
+            "unique": false,
+            "columnNames": [
+              "is_question"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_utterances_is_question` ON `${TABLE_NAME}` (`is_question`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "meeting_sessions",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "session_id"
+            ],
+            "referencedColumns": [
+              "session_id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "query_records",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`query_id` TEXT NOT NULL, `session_id` TEXT NOT NULL, `source_utterance_ids` TEXT NOT NULL, `display_question` TEXT NOT NULL, `answer_text` TEXT NOT NULL, `query_route` TEXT NOT NULL, `result_status` TEXT NOT NULL, `end_to_end_ms` INTEGER NOT NULL, `created_at` INTEGER NOT NULL, PRIMARY KEY(`query_id`), FOREIGN KEY(`session_id`) REFERENCES `meeting_sessions`(`session_id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "queryId",
+            "columnName": "query_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sessionId",
+            "columnName": "session_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sourceUtteranceIds",
+            "columnName": "source_utterance_ids",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "displayQuestion",
+            "columnName": "display_question",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "answerText",
+            "columnName": "answer_text",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "queryRoute",
+            "columnName": "query_route",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "resultStatus",
+            "columnName": "result_status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "endToEndMs",
+            "columnName": "end_to_end_ms",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "created_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "query_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_query_records_session_id_created_at",
+            "unique": false,
+            "columnNames": [
+              "session_id",
+              "created_at"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_query_records_session_id_created_at` ON `${TABLE_NAME}` (`session_id`, `created_at`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "meeting_sessions",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "session_id"
+            ],
+            "referencedColumns": [
+              "session_id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "evidence_snapshots",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`evidence_id` TEXT NOT NULL, `query_id` TEXT NOT NULL, `content` TEXT NOT NULL, `created_at` INTEGER NOT NULL, PRIMARY KEY(`evidence_id`), FOREIGN KEY(`query_id`) REFERENCES `query_records`(`query_id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "evidenceId",
+            "columnName": "evidence_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "queryId",
+            "columnName": "query_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "content",
+            "columnName": "content",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "created_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "evidence_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_evidence_snapshots_query_id",
+            "unique": false,
+            "columnNames": [
+              "query_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_evidence_snapshots_query_id` ON `${TABLE_NAME}` (`query_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "query_records",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "query_id"
+            ],
+            "referencedColumns": [
+              "query_id"
+            ]
+          }
+        ]
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a2348479985f430632fbd19f3aa94430')"
+    ]
+  }
+}

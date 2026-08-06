@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "allowed_initial_hosts": [
+    "github.com"
+  ],
+  "artifacts": [
+    {
+      "id": "sherpa-onnx-aar",
+      "url": "https://github.com/k2-fsa/sherpa-onnx/releases/download/v1.13.2/sherpa-onnx-1.13.2.aar",
+      "destination": "app/libs/sherpa-onnx-1.13.2.aar",
+      "license_source": "https://github.com/k2-fsa/sherpa-onnx/blob/v1.13.2/LICENSE"
+    },
+    {
+      "id": "streaming-zipformer-bilingual",
+      "url": "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-streaming-zipformer-small-bilingual-zh-en-2023-02-16.tar.bz2",
+      "destination": ".model-cache/asr-model.tar.bz2",
+      "license_source": "https://github.com/k2-fsa/sherpa-onnx/blob/master/LICENSE"
+    },
+    {
+      "id": "silero-vad",
+      "url": "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/silero_vad.onnx",
+      "destination": "app/src/main/assets/silero_vad.onnx",
+      "license_source": "https://github.com/snakers4/silero-vad/blob/master/LICENSE"
+    },
+    {
+      "id": "3dspeaker-campplus",
+      "url": "https://github.com/k2-fsa/sherpa-onnx/releases/download/speaker-recongition-models/3dspeaker_speech_campplus_sv_zh-cn_16k-common.onnx",
+      "destination": "app/src/main/assets/speaker/3dspeaker_speech_campplus_sv_zh-cn_16k-common.onnx",
+      "license_source": "https://github.com/modelscope/3D-Speaker/blob/master/LICENSE"
+    }
+  ]
+}

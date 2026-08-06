@@ -1,0 +1,38 @@
+package com.qujindai.locowiki.flashrecall.v2.ui
+
+import com.qujindai.locowiki.flashrecall.v2.domain.*
+
+data class FlashRecallUiState(
+    val initializing: Boolean = true,
+    val message: String = "正在初始化本地数据库…",
+    val modelReady: Boolean = false,
+    val speakerProfile: SpeakerProfileState = SpeakerProfileState(),
+    val selfEnrollmentPhase: SelfEnrollmentPhase = SelfEnrollmentPhase.IDLE,
+    val selfEnrollmentSampleNumber: Int = 1,
+    val speakerMode: SpeakerMode = SpeakerMode.SELF_ONLY,
+    val speakerClusters: List<SpeakerClusterSummary> = emptyList(),
+    val activeThread: QuestionThreadSummary? = null,
+    val speakerReclustering: Boolean = false,
+    val calibrationEndsAtEpochMs: Long = 0,
+    val listening: Boolean = false,
+    val vadSpeech: Boolean = false,
+    val partialTranscript: String = "",
+    val lastTranscript: String = "",
+    val typedQuestion: String = "",
+    val currentQueryText: String = "",
+    val recentUtterances: List<MeetingUtterance> = emptyList(),
+    val questionCandidates: List<MeetingUtterance> = emptyList(),
+    val selectedUtteranceIds: Set<String> = emptySet(),
+    val recordMode: RecordMode = RecordMode.defaultMode(),
+    val currentSessionId: String? = null,
+    val lastSessionSummary: MeetingSessionSummary? = null,
+    val archiveMessage: String = "",
+    val context: MeetingContext = MeetingContext(),
+    val answer: AnswerCard? = null,
+    val endToEndMs: Long = 0,
+    val asrTiming: AsrTiming = AsrTiming(),
+    val importPreview: ImportPreview? = null,
+    val dataStatus: DataStatus = DataStatus(),
+    val diagnostic: DeviceDiagnostic? = null,
+    val error: String = "",
+)
