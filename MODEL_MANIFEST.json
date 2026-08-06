@@ -14,28 +14,28 @@
       "url": "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-streaming-zipformer-small-bilingual-zh-en-2023-02-16.tar.bz2",
       "destination": ".model-cache/asr-model.tar.bz2",
       "license_source": "https://github.com/k2-fsa/sherpa-onnx/blob/master/LICENSE",
-      "sha256": "87a16d4ded843f7a1c0f1e07f533534b88ddb32cd52f48cfe7766fe2382a2984",
+      "sha256": "2b7c63322b32e5e0f2526043a1103366119ca58dd615cd7105a37c01db9553d7",
       "bytes": 458187351,
       "extract": [
         {
           "name": "encoder-epoch-99-avg-1.int8.onnx",
-          "sha256": "9683f4458737932670bb715f2b985bef4642c249196c60bd90148d655bacb012",
-          "bytes": 30339998
+          "sha256": "41a54ec051fd7110c96fa9933d406d1bc630da15ebc6f9e8bbda5da757597c83",
+          "bytes": 42980804
         },
         {
           "name": "decoder-epoch-99-avg-1.onnx",
-          "sha256": "4c8be9b0eedb36977b03cfbdd1eb82e423fb5ccb4127140e792e50dfa359ae78",
-          "bytes": 806992
+          "sha256": "89be509a83175261695bdef5fd1c7b9ab1129a663d1284e7ba9f8507b21e0906",
+          "bytes": 13877276
         },
         {
           "name": "joiner-epoch-99-avg-1.int8.onnx",
-          "sha256": "f24a38af6f5a767249b4f9d173283005db9f2c41bd649c0918037b4132e75046",
-          "bytes": 215397
+          "sha256": "bdda356d6f9b8c2d7cee9ee0e26075fa537490f7fd06520be408d287073667b9",
+          "bytes": 3228485
         },
         {
           "name": "tokens.txt",
-          "sha256": "d8a25b91db6aa126652906094c2d918b1a66925295a4c2118275031135633661",
-          "bytes": 98324
+          "sha256": "a8e0e4ec53810e433789b54a5c0134a7eaa2ffca595a6334d54c00da858841d3",
+          "bytes": 56317
         }
       ]
     },
@@ -44,15 +44,15 @@
       "url": "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/silero_vad.onnx",
       "destination": "app/src/main/assets/silero_vad.onnx",
       "license_source": "https://github.com/snakers4/silero-vad/blob/master/LICENSE",
-      "sha256": "b7730e6c0a2014bc3a52f9f5092516cfa9b9700054294ba915a37b06056f6192",
-      "bytes": 1857522
+      "sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+      "bytes": 643854
     },
     {
       "id": "3dspeaker-campplus",
       "url": "https://github.com/k2-fsa/sherpa-onnx/releases/download/speaker-recongition-models/3dspeaker_speech_campplus_sv_zh-cn_16k-common.onnx",
       "destination": "app/src/main/assets/speaker/3dspeaker_speech_campplus_sv_zh-cn_16k-common.onnx",
       "license_source": "https://github.com/modelscope/3D-Speaker/blob/master/LICENSE",
-      "sha256": "06393356ff04c20be65abd2d555bde319d9512411eb86bd9ae389b727b4b9405",
+      "sha256": "f682b514c05d947ee3fa91cd6ec6c5c7543479a128373fa29b1faedccd21fd11",
       "bytes": 28281138
     }
   ]
