@@ -1,0 +1,52 @@
+name: Import Public Source
+
+on:
+  push:
+    branches:
+      - import/v0.4.0-alpha.1
+    paths:
+      - .github/workflows/import-public-source.yml
+
+permissions:
+  contents: write
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout bootstrap branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Materialize clean public source commit
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          cat .bootstrap/publicwork.part* > /tmp/publicwork.tar.xz.b64
+          test "$(wc -c < /tmp/publicwork.tar.xz.b64)" -eq 75120
+          printf '%s  %s\n' \
+            '1b0e6f8cafbade2055dd8e34bd3c2bf9d3c6c1eb41686302d04803da23d060d6' \
+            /tmp/publicwork.tar.xz.b64 | sha256sum -c -
+
+          base64 -d /tmp/publicwork.tar.xz.b64 > /tmp/publicwork.tar.xz
+          printf '%s  %s\n' \
+            '35b638eb4b979e721852939ab6afb67520773a84b128623644869cdca559cac6' \
+            /tmp/publicwork.tar.xz | sha256sum -c -
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git fetch origin main
+          git checkout -B public-import origin/main
+          git rm -rf .
+          tar -xJf /tmp/publicwork.tar.xz -C .
+
+          python3 scripts/public_sanitize_check.py --root .
+          python3 scripts/verify_privacy.py
+          python3 -m unittest discover -s tests -v
+
+          git add -A
+          test "$(git diff --cached --name-only | wc -l)" -eq 90
+          git commit -m 'feat: publish independent Android v0.4 source'
+          git push origin HEAD:main
