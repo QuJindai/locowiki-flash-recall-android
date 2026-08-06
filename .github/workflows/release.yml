@@ -1,0 +1,37 @@
+name: Publish Test Pre-release
+on:
+  push:
+    branches: [main]
+    paths: [PUBLIC_RELEASE_REQUEST.md]
+  workflow_dispatch:
+permissions: {contents: write}
+concurrency: {group: "release-v0.4.0-alpha.1", cancel-in-progress: false}
+jobs:
+  verify:
+    uses: ./.github/workflows/verify.yml
+  emulator-qa:
+    needs: verify
+    uses: ./.github/workflows/emulator-qa.yml
+  publish:
+    needs: [verify, emulator-qa]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with: {name: locowiki-flash-recall-v0.4.0-arm64-debug, path: dist}
+      - name: Publish
+        env: {GH_TOKEN: "${{ github.token }}"}
+        run: |
+          TAG=v0.4.0-alpha.1
+          test ! -e PUBLIC_RELEASE_REQUEST.md || grep -Fxq "$TAG" PUBLIC_RELEASE_REQUEST.md
+          ! grep -Eq 'UNKNOWN|FAIL' docs/third-party-notices.md
+          gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1 && {
+            echo "Release $TAG already exists" >&2
+            exit 1
+          }
+          gh release create "$TAG" dist/* MODEL_MANIFEST.json COPYRIGHT.md NOTICE-NO-LICENSE.md \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" \
+            --prerelease \
+            --title 'LocoWiki Flash Recall v0.4.0-alpha.1 — ARM64 Debug Test APK' \
+            --notes 'Public test build. Debug signed; not a production or app-store package.'
