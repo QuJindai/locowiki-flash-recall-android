@@ -46,7 +46,11 @@ jobs:
           python3 scripts/verify_privacy.py
           python3 -m unittest discover -s tests -v
 
+          rm -f .github/workflows/verify.yml
+          rm -f .github/workflows/emulator-qa.yml
+          rm -f .github/workflows/release.yml
+
           git add -A
-          test "$(git diff --cached --name-only | wc -l)" -eq 90
+          test "$(git diff --cached --name-only | wc -l)" -eq 87
           git commit -m 'feat: publish independent Android v0.4 source'
           git push origin HEAD:main
