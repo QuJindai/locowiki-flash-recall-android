@@ -1,0 +1,48 @@
+name: Emulator Voiceprint QA
+on:
+  push:
+    branches: [main]
+    paths-ignore: [PUBLIC_RELEASE_REQUEST.md]
+  pull_request:
+  workflow_dispatch:
+  workflow_call:
+permissions: {contents: read}
+concurrency: {group: "emulator-${{ github.ref }}", cancel-in-progress: true}
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '17'}
+      - uses: gradle/actions/setup-gradle@v4
+        with: {gradle-version: '8.11.1'}
+      - uses: android-actions/setup-android@v3
+      - run: sudo apt-get update && sudo apt-get install -y espeak-ng sox
+      - run: python scripts/download_models.py --manifest MODEL_MANIFEST.json --root .
+      - run: gradle --no-daemon testDebugUnitTest assembleDebug -PtargetAbi=x86_64
+      - name: Prepare synthetic PCM
+        run: |
+          espeak-ng -v zh -s 120 -w /tmp/source.wav '这是用于公开云端测试的合成声纹样本，不包含真实用户声音。'
+          sox /tmp/source.wav -r 16000 -c 1 -b 16 -e signed-integer /tmp/known.wav trim 0 4.5 pad 0 1
+          sox /tmp/known.wav -t raw -e signed-integer -b 16 -L /tmp/segment.pcm
+          bytes=$(stat -c%s /tmp/segment.pcm); test "$bytes" -ge 96000; test "$bytes" -le 384000
+      - name: Run API 35 emulator gate
+        uses: reactivecircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          profile: pixel_7
+          cores: 2
+          heap-size: 512M
+          disk-size: 4096M
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -no-boot-anim
+          script: APK=app/build/outputs/apk/debug/app-debug.apk OUT=qa-artifacts/voiceprint bash scripts/qa_three_voiceprint_segments.sh
+      - uses: actions/upload-artifact@v4
+        if: success()
+        with: {name: voiceprint-qa-pass, path: qa-artifacts, retention-days: 3}
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with: {name: voiceprint-qa-failure, path: qa-artifacts, retention-days: 7}
